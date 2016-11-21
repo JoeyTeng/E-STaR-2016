@@ -83,6 +83,12 @@ def main(input_handle, output_handle):
 
 
 if __name__ == '__main__':
-    for path in sys.argv[1:]:
+    if sys.argv[1] == '-i':
+        files = [path.replace('\n', '')
+                 for path in open(sys.argv[2], 'rb').readlines()]
+    else:
+        files = sys.argv[1:]
+
+    for path in files:
         main(open(path, 'rb'), open('%s.processed' % path, 'wb'))
-        subprocess.call(['mv', '%s.processed', '%s'])
+        subprocess.call(['mv', '%s.processed' % path, '%s' % path])
