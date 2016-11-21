@@ -1,5 +1,6 @@
 import re
 import sys
+import subprocess
 
 
 def time_convert(string):
@@ -58,7 +59,9 @@ def separate(parsed_dialog, threshold=2000, iterable=True):
             if not (abs(sentence[0] - last_time) < threshold):
                 yield dialog
                 dialog = []
-            sentences = [s[2:] for s in re.findall(r'(?:^|(?<= ))- .*?(?:(?= -)|$)', sentence[2])] # check for multiple sentence with -, separate and remove -.
+            # check for multiple sentence with -, separate and remove -.
+            sentences = [s[2:] for s in re.findall(
+                r'(?:^|(?<= ))- .*?(?:(?= -)|$)', sentence[2])]
             if sentences:
                 dialog += sentences
             else:
@@ -78,6 +81,14 @@ def main(input_handle, output_handle):
         output_handle.writelines(['%s\n' % sentence for sentence in dialog])
         output_handle.write('\n')
 
+
 if __name__ == '__main__':
-    for path in sys.argv[1:]:
+    if sys.argv[1] == '-i':
+        files = [path.replace('\n', '')
+                 for path in open(sys.argv[2], 'rb').readlines()]
+    else:
+        files = sys.argv[1:]
+
+    for path in files:
         main(open(path, 'rb'), open('%s.processed' % path, 'wb'))
+        subprocess.call(['mv', '%s.processed' % path, path])
