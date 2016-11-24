@@ -94,5 +94,15 @@ if __name__ == '__main__':
         files = sys.argv[1:]
 
     for path in files:
-        main(open(path, 'rb'), open('%s.processed' % path, 'wb'))
+        try:
+            print path
+            main(open(path, 'rb'), open('%s.processed' % path, 'wb'))
+        except AttributeError:
+            print 'processed : ', path
+            subprocess.call(['rm', '%s.processed' % path])
+            continue
+        except Exception as e:
+            print e
+            new_file = '%s.%s' % (path[path.rfind('/', 0, path.rfind('/')) + 1:path.rfind('/')], path[path.rfind('/') + 1:])
+            subprocess.call(['mv', path, '/root/data/exception/%s' % new_file])
         subprocess.call(['mv', '%s.processed' % path, path])
