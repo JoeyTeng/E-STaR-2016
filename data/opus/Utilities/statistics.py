@@ -53,9 +53,9 @@ class Statistics(object):
 
     @staticmethod
     def open_files(paths):
-        self.file = {
+        file = {
         'input' : [line.strip() for line in open(paths['input'],'r')],
-        'output' : codecs.open('%s.tokenized.txt' % path, 'wb', encoding='utf-8'),
+        'output' : open('%s.tokenized.txt' % path, 'wb'),
         'f_name' : [line.strip() for line in open('english_female_names.txt','r')],
         'm_name' : [line.strip() for line in open('english_male_names.txt','r')],
         'swear1' : [line.strip() for line in open('swear_words_multi.uniq','r')],
@@ -86,5 +86,5 @@ if __name__ == "__main__":
                 'output': ('%s.statistics.txt' % path)
         }
         statistics = Statistics()
-        statistics.open_files(paths)
+        statistics.file = statistics.open_files(paths)
         statistics.Main()
