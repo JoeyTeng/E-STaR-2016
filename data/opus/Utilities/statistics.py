@@ -5,7 +5,7 @@ import textblob
 
 class Statistics(object):
 
-    def __init__(self, paths):
+    def __init__(self):
         pass
 
     def Speaker(self, number):
