@@ -41,7 +41,6 @@ class Statistics(object):
         yield # To print DIALOGUE 1
         for i, row in enumerate(self.file['input']):      #long sentence change line --> still consider as one line?
             if len(row) != 0:
-                print len(row), row
                 sentence += 1
                 self.Speaker(sentence)
                 self.Sentence(row)
